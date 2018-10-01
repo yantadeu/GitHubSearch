@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="1dp"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <TextView
+        android:id="@+id/tvRowLabeltvNumero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textStyle="bold"
+        android:text="@string/n_mero" />
+
+    <TextView
+        android:id="@+id/tvRowNumero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintLeft_toRightOf="@+id/tvRowLabeltvNumero"/>
+
+    <TextView
+        android:id="@+id/tvRowLabelTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tvRowLabeltvNumero"
+        android:text="@string/titulo" />
+
+    <TextView
+        android:id="@+id/tvRowTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:maxLines="1"
+        app:layout_constraintTop_toTopOf="@+id/tvRowLabelTitulo"
+        app:layout_constraintLeft_toRightOf="@+id/tvRowLabelTitulo"/>
+
+    <TextView
+        android:id="@+id/tvRowLabelTipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvRowLabelTitulo"
+        android:text="@string/tipo" />
+
+    <TextView
+        android:id="@+id/tvRowTipo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/tvRowLabelTipo"
+        app:layout_constraintLeft_toRightOf="@+id/tvRowLabelTipo"/>
+
+</android.support.constraint.ConstraintLayout>

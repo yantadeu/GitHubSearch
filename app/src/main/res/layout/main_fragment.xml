@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.main.MainFragment">
+
+    <EditText
+        android:id="@+id/etMainFragmentPesquisa"
+        android:layout_width="305dp"
+        android:layout_height="54dp"
+        android:hint="@string/example_url"
+        app:layout_constraintEnd_toStartOf="@id/btnMainFragmentPesquisar"
+        app:layout_constraintHorizontal_bias="0.37"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:layout_editor_absoluteY="10dp" />
+
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/btnMainFragmentPesquisar"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_marginEnd="16dp"
+        app:backgroundTint="@android:color/background_dark"
+        app:layout_constraintBottom_toBottomOf="@+id/etMainFragmentPesquisa"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/etMainFragmentPesquisa"
+        app:rippleColor="@android:color/background_light"
+        android:src="@drawable/ic_search_black_24dp" />
+
+    <include
+        layout="@layout/recyclerview_base_white"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etMainFragmentPesquisa" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="1dp"
+    android:background="@color/white"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <TextView
+        android:id="@+id/tvTipo"
+        android:textSize="20sp"
+        android:textStyle="bold|italic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+
+    <TextView
+        android:id="@+id/tvLabeltvNumero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvTipo"
+        android:textStyle="bold"
+        android:text="@string/n_mero" />
+
+    <TextView
+        android:id="@+id/tvNumero"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@id/tvLabeltvNumero"
+        app:layout_constraintLeft_toRightOf="@+id/tvLabeltvNumero"/>
+
+    <TextView
+        android:id="@+id/tvLabelTitulo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:textStyle="bold"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabeltvNumero"
+        android:text="@string/titulo" />
+
+    <TextView
+        android:id="@+id/tvTitulo"
+        android:layout_width="0dp"
+        android:minLines="2"
+        android:ellipsize="none"
+        android:scrollHorizontally="false"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="@+id/tvLabelTitulo"
+        app:layout_constraintLeft_toRightOf="@+id/tvLabelTitulo"/>
+
+    <TextView
+        android:id="@+id/tvLabelDescricao"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="8dp"
+        android:textStyle="bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvLabelTitulo"
+        android:text="@string/descri_o" />
+
+    <ScrollView
+        android:layout_marginTop="12dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvLabelDescricao"
+        app:layout_constraintTop_toTopOf="@+id/tvLabelDescricao"
+        app:layout_constraintLeft_toRightOf="@+id/tvLabelDescricao">
+        <TextView
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:id="@+id/tvDescricao"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+    </ScrollView>
+
+
+
+</android.support.constraint.ConstraintLayout>

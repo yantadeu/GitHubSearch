@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">GitHubSearch - Yan</string>
+    <string name="example_url">Ex: reactjs/reactjs.org</string>
+    <string name="titulo">Titulo:</string>
+    <string name="tipo">Tipo:</string>
+    <string name="n_mero">Número:</string>
+    <string name="n_o_foram_encontrados_resultados">Não foram encontrados resultados</string>
+    <string name="descri_o">Descrição:</string>
+</resources>
