@@ -6,6 +6,9 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 import android.util.Log;
 
@@ -32,58 +35,90 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<List<Item>> itens;
     private MutableLiveData<Item> itemSelecionado;
 
+    private AlertDialog myErrorDialog;
+
+    private boolean isOnline(Context context) {
+        ConnectivityManager cm =
+                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        return netInfo != null && netInfo.isConnectedOrConnecting();
+    }
+
     @SuppressLint("CheckResult")
     public void pesquisar(final String repoName, Context context) {
         loading.setValue(true);
 
-        try{
-            Observable.zip(WebApiHelper
-                            .doGetRequest(ApiEndpoint.getIssueEndpoint(repoName), Issue.class),
-                    WebApiHelper
-                            .doGetRequest(ApiEndpoint.getPullRequestEndpoint(repoName), PullRequest.class),
-                    new BiFunction<List<Issue>, List<PullRequest>, List<Item>>() {
-                        @Override
-                        public List<Item> apply(List<Issue> issues, List<PullRequest> pulls) throws Exception {
-                            ArrayList<Item> itens = new ArrayList<>();
+        if(isOnline(context)){
+            try{
+                Observable.zip(WebApiHelper
+                                .doGetRequest(ApiEndpoint.getIssueEndpoint(repoName), Issue.class),
+                        WebApiHelper
+                                .doGetRequest(ApiEndpoint.getPullRequestEndpoint(repoName), PullRequest.class),
+                        new BiFunction<List<Issue>, List<PullRequest>, List<Item>>() {
+                            @Override
+                            public List<Item> apply(List<Issue> issues, List<PullRequest> pulls) throws Exception {
+                                ArrayList<Item> itens = new ArrayList<>();
 
-                            itens.addAll(issues);
-                            itens.addAll(pulls);
+                                itens.addAll(issues);
+                                itens.addAll(pulls);
 
-                            return itens;
-                        }
-                    })
-                    .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Consumer<List<Item>>() {
-                                   @Override
-                                   public void accept(List<Item> i) throws Exception {
-                                       itens.setValue(i);
-                                   }
-                               },
-                            new Consumer<Throwable>() {
-                                @Override
-                                public void accept(Throwable throwable) throws Exception {
-                                    loading.setValue(false);
-                                    message.setValue(throwable.getMessage());
-                                }
-                            },
-                            new Action() {
-                                @Override
-                                public void run() throws Exception {
-                                    loading.setValue(false);
-                                }
-                            });
-        }catch (Exception $e){
-            new AlertDialog.Builder(context)
-                    .setTitle("Erro")
-                    .setMessage("Houve um erro! Confira a conexão com a internet e Tente novamente mais tarde")
-                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            Log.d("MainActivity", "Concordou");
-                        }
-                    })
-                    .show();
+                                return itens;
+                            }
+                        })
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(new Consumer<List<Item>>() {
+                                       @Override
+                                       public void accept(List<Item> i) throws Exception {
+                                           itens.setValue(i);
+                                       }
+                                   },
+                                new Consumer<Throwable>() {
+                                    @Override
+                                    public void accept(Throwable throwable) throws Exception {
+                                        loading.setValue(false);
+                                        message.setValue(throwable.getMessage());
+                                    }
+                                },
+                                new Action() {
+                                    @Override
+                                    public void run() throws Exception {
+                                        loading.setValue(false);
+                                    }
+                                });
+            }catch (Exception $e){
+                showDialog(context, "Erro", "Houve um erro! Confira a conexão com a internet e Tente novamente mais tarde");
+            }
+        }else{
+            showDialog(context, "Erro", "Confira sua conexão com a internet");
+        }
+
+
+
+    }
+
+    public void showDialog(Context context, String title, String message) {
+
+        SharedPreferences preferences =
+                context.getSharedPreferences("yan.githubsearch", Context.MODE_PRIVATE);
+
+        String details = preferences.getString("details", "0");
+
+        if(!details.equals("1")){
+            if( myErrorDialog != null && myErrorDialog.isShowing() ) return;
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle(title);
+            builder.setMessage(message);
+            builder.setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialog, int arg1) {
+                    dialog.dismiss();
+                }});
+            builder.setCancelable(false);
+            myErrorDialog = builder.create();
+            myErrorDialog.show();
+        }else{
+            preferences.edit().putString("details", "0").apply();
         }
 
     }

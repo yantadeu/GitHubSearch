@@ -75,16 +75,7 @@ public class MainFragment extends Fragment implements ItemAdapter.OnItemClickLis
                 if(!mEtPesquisa.getText().toString().equals("")){
                     mViewModel.pesquisar(mEtPesquisa.getText().toString(), mEtPesquisa.getContext());
                 }else{
-                    new AlertDialog.Builder(mEtPesquisa.getContext())
-                            .setTitle("Atenção")
-                            .setMessage("É necessário inserir um nome de repositório")
-                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    Log.d("MainActivity", "Concordou");
-                                }
-                            })
-                            .show();
+                    showDialog(mEtPesquisa.getContext(), "Atenção", "É necessário inserir um nome de repositório");
                 }
 
             }
@@ -158,7 +149,6 @@ public class MainFragment extends Fragment implements ItemAdapter.OnItemClickLis
         }else{
             preferences.edit().putString("details", "0").apply();
         }
-
 
     }
 
