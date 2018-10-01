@@ -36,10 +36,11 @@ public class MainViewModel extends ViewModel {
     private MutableLiveData<Item> itemSelecionado;
 
     private AlertDialog myErrorDialog;
+    private Context myContext;
 
-    private boolean isOnline(Context context) {
+    private boolean isOnline() {
         ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+                (ConnectivityManager) myContext.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo netInfo = cm.getActiveNetworkInfo();
         return netInfo != null && netInfo.isConnectedOrConnecting();
     }
@@ -47,8 +48,8 @@ public class MainViewModel extends ViewModel {
     @SuppressLint("CheckResult")
     public void pesquisar(final String repoName, Context context) {
         loading.setValue(true);
-
-        if(isOnline(context)){
+        myContext = context;
+        if(isOnline()){
             try{
                 Observable.zip(WebApiHelper
                                 .doGetRequest(ApiEndpoint.getIssueEndpoint(repoName), Issue.class),
@@ -77,7 +78,8 @@ public class MainViewModel extends ViewModel {
                                     @Override
                                     public void accept(Throwable throwable) throws Exception {
                                         loading.setValue(false);
-                                        message.setValue(throwable.getMessage());
+                                        showDialog(myContext, "Erro", "Confira sua conexão com a internet");
+                                        //message.setValue(throwable.getMessage());
                                     }
                                 },
                                 new Action() {
@@ -87,17 +89,17 @@ public class MainViewModel extends ViewModel {
                                     }
                                 });
             }catch (Exception $e){
-                showDialog(context, "Erro", "Houve um erro! Confira a conexão com a internet e Tente novamente mais tarde");
+                showDialog(myContext, "Erro", "Houve um erro! Confira a conexão com a internet e Tente novamente mais tarde");
             }
         }else{
-            showDialog(context, "Erro", "Confira sua conexão com a internet");
+            showDialog(myContext, "Erro", "Confira sua conexão com a internet");
         }
 
 
 
     }
 
-    public void showDialog(Context context, String title, String message) {
+    private void showDialog(Context context, String title, String message) {
 
         SharedPreferences preferences =
                 context.getSharedPreferences("yan.githubsearch", Context.MODE_PRIVATE);
